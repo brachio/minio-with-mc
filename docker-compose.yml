@@ -1,0 +1,25 @@
+version: "3"
+services:
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    volumes:
+      - /media/t5/docker-volumes/minio/data:/data
+      - /media/t5/docker-volumes/minio/config:/root/.minio
+    command: server /data
+    restart: always
+    network_mode: host
+
+  mc:
+    build: .
+    image: minio/mc/ailab:0.1
+    container_name: mc
+    volumes:
+      - /root/product/logs:/root/logs
+    stdin_open: true
+    tty: true
+    entrypoint: /bin/sh
+    command: /root/init.sh
+    restart: always
+    network_mode: host
+
