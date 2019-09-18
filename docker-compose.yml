@@ -3,12 +3,13 @@ services:
   minio:
     image: minio/minio:latest
     container_name: minio
+    ports:
+      - 9000:9000
     volumes:
       - /media/t5/docker-volumes/minio/data:/data
       - /media/t5/docker-volumes/minio/config:/root/.minio
     command: server /data
     restart: always
-    network_mode: host
 
   mc:
     build: .
@@ -21,5 +22,5 @@ services:
     entrypoint: /bin/sh
     command: /root/init.sh
     restart: always
-    network_mode: host
-
+    links:
+      - minio:minioalias
